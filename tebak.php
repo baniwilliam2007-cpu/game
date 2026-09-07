@@ -8,7 +8,7 @@ if (isset($_POST['reset'])) {
     exit;
 }
 
-// Membuat angka rahasia hanya satu kali
+// Membuat angka rahasia
 if (!isset($_SESSION['angka'])) {
     $_SESSION['angka'] = rand(1, 5);
 }
@@ -33,7 +33,6 @@ if (isset($_POST['submit_tebakan'])) {
 
         $tebakan = $_POST['tebak'];
 
-        // Tebakan benar
         if ($tebakan == $angka_rahasia) {
 
             $pesan = "🎉 JACKPOT! Tebakan kamu benar!";
@@ -42,7 +41,6 @@ if (isset($_POST['submit_tebakan'])) {
 
         } else {
 
-            // Game Over
             if ($_SESSION['percobaan'] >= 3) {
 
                 $pesan = "🔴 GAME OVER! Kesempatan kamu sudah habis.";
@@ -80,18 +78,30 @@ $percobaan = $_SESSION['percobaan'];
 
     <style>
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
+
             margin: 0;
-            padding: 0;
+
+            padding: 20px;
 
             font-family: Arial, sans-serif;
 
-            background: linear-gradient(
-                135deg,
-                #09001a,
-                #17002e,
-                #001b33
-            );
+            background:
+                radial-gradient(
+                    circle at top,
+                    #18205c,
+                    transparent 40%
+                ),
+                linear-gradient(
+                    135deg,
+                    #05000d,
+                    #10001f,
+                    #00182d
+                );
 
             color: white;
 
@@ -104,202 +114,314 @@ $percobaan = $_SESSION['percobaan'];
             align-items: center;
         }
 
+
         .container {
 
-            width: 400px;
+            width: 430px;
 
-            padding: 35px;
+            padding: 40px 35px;
 
-            background: rgba(20, 20, 40, 0.9);
+            background: rgba(10, 15, 35, 0.94);
 
-            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.5);
+
+            border-radius: 25px;
 
             text-align: center;
 
-            box-shadow: 0 0 30px #00ffff;
+            box-shadow:
+                0 0 20px rgba(0, 255, 255, 0.4),
+                0 0 60px rgba(0, 255, 255, 0.15);
+
+            backdrop-filter: blur(10px);
         }
+
 
         h1 {
 
+            margin: 0;
+
             color: #00ffff;
 
-            text-shadow: 0 0 10px #00ffff;
+            font-size: 30px;
+
+            letter-spacing: 2px;
+
+            text-shadow:
+                0 0 8px #00ffff,
+                0 0 20px #00ffff;
         }
+
 
         .target {
 
-            font-size: 70px;
+            font-size: 75px;
 
-            margin: 20px 0;
+            margin: 25px 0;
+
+            filter:
+                drop-shadow(0 0 10px #00ffff);
         }
 
+
         p {
+
+            color: #d5d5d5;
+
+            line-height: 1.6;
+        }
+
+
+        p strong {
+
+            color: #00ffff;
+        }
+
+
+        .rules {
+
+            margin: 25px 0;
+
+            padding: 18px;
+
+            border-radius: 15px;
+
+            background: rgba(0, 255, 255, 0.06);
+
+            border: 1px solid rgba(0, 255, 255, 0.5);
+
+            line-height: 1.6;
 
             color: #ddd;
         }
 
-        .rules {
-
-            background: rgba(0, 255, 255, 0.08);
-
-            border: 1px solid #00ffff;
-
-            padding: 15px;
-
-            border-radius: 10px;
-
-            margin: 20px 0;
-        }
 
         .rules strong {
 
             color: #00ffff;
+
+            letter-spacing: 1px;
         }
+
 
         .form-tebakan {
 
-            margin-top: 20px;
+            margin-top: 25px;
         }
+
 
         input {
 
-            width: 80%;
+            width: 100%;
 
-            padding: 12px;
+            padding: 14px;
 
             border: 2px solid #00ffff;
 
-            border-radius: 8px;
+            border-radius: 12px;
 
-            background: #080812;
+            background: #05050d;
 
             color: white;
 
-            font-size: 16px;
+            font-size: 17px;
 
             text-align: center;
 
             outline: none;
+
+            transition: 0.3s;
         }
+
 
         input:focus {
 
-            box-shadow: 0 0 15px #00ffff;
+            border-color: #ffffff;
+
+            box-shadow:
+                0 0 10px #00ffff,
+                0 0 25px rgba(0, 255, 255, 0.4);
         }
+
 
         button {
 
-            margin-top: 15px;
+            margin-top: 17px;
 
-            padding: 12px 25px;
+            padding: 14px 28px;
 
             border: none;
 
-            border-radius: 8px;
+            border-radius: 12px;
 
             background: #00ffff;
 
-            color: #000;
+            color: #001010;
+
+            font-size: 15px;
 
             font-weight: bold;
 
+            letter-spacing: 1px;
+
             cursor: pointer;
 
-            box-shadow: 0 0 15px #00ffff;
+            transition: 0.3s;
+
+            box-shadow:
+                0 0 10px #00ffff,
+                0 0 25px rgba(0, 255, 255, 0.4);
         }
+
 
         button:hover {
 
+            transform: translateY(-2px);
+
             background: white;
+
+            box-shadow:
+                0 0 15px white,
+                0 0 30px #00ffff;
         }
+
 
         .percobaan {
 
-            margin-top: 20px;
+            margin-top: 25px;
 
-            padding: 12px;
+            padding: 13px;
 
-            border: 1px solid #00ffff;
+            border-radius: 12px;
 
-            border-radius: 10px;
+            background: rgba(0, 255, 255, 0.07);
+
+            border: 1px solid rgba(0, 255, 255, 0.4);
 
             color: #00ffff;
 
             font-weight: bold;
-
-            background: rgba(0, 255, 255, 0.08);
         }
+
 
         .pesan {
 
             margin-top: 20px;
 
-            padding: 15px;
+            padding: 16px;
 
-            border-radius: 10px;
+            border-radius: 12px;
 
             font-weight: bold;
+
+            line-height: 1.5;
         }
+
 
         .pesan.benar {
 
-            border: 2px solid #00ff88;
-
             color: #00ff88;
 
-            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
 
-            box-shadow: 0 0 15px #00ff88;
+            background: rgba(0, 255, 136, 0.08);
+
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.35);
         }
+
 
         .pesan.salah {
 
-            border: 2px solid #ff3366;
+            color: #ff4f81;
 
-            color: #ff3366;
+            border: 2px solid #ff4f81;
 
-            background: rgba(255, 51, 102, 0.1);
+            background: rgba(255, 79, 129, 0.08);
 
-            box-shadow: 0 0 15px #ff3366;
+            box-shadow: 0 0 20px rgba(255, 79, 129, 0.25);
         }
+
 
         .pesan.gameover {
 
-            border: 2px solid #ff0000;
-
             color: #ff4444;
 
-            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff3333;
 
-            box-shadow: 0 0 15px #ff0000;
+            background: rgba(255, 0, 0, 0.08);
+
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
         }
+
 
         .reset {
 
-            margin-top: 15px;
+            margin-top: 5px;
         }
+
+
+        .reset button {
+
+            background: #ffcc00;
+
+            box-shadow:
+                0 0 10px #ffcc00,
+                0 0 20px rgba(255, 204, 0, 0.3);
+        }
+
+
+        .reset button:hover {
+
+            background: white;
+        }
+
 
         .info {
 
-            margin-top: 20px;
+            margin-top: 25px;
 
-            color: #aaa;
+            color: #888;
 
-            font-size: 14px;
+            font-size: 13px;
         }
+
 
         footer {
 
             margin-top: 25px;
 
+            padding-top: 20px;
+
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+            color: #555;
+
             font-size: 12px;
 
-            color: #777;
+            letter-spacing: 1px;
+        }
+
+
+        @media (max-width: 500px) {
+
+            .container {
+
+                width: 100%;
+
+                padding: 30px 20px;
+            }
+
+            h1 {
+
+                font-size: 25px;
+            }
+
         }
 
     </style>
 
 </head>
+
 
 <body>
 
@@ -307,13 +429,17 @@ $percobaan = $_SESSION['percobaan'];
 
     <h1>🎯 NUMBER HUNTER</h1>
 
+
     <div class="target">
         🎯
     </div>
 
+
     <p>
-        Tebak angka rahasia dari <strong>1 sampai 5</strong>.
+        Tebak angka rahasia dari
+        <strong>1 sampai 5</strong>.
     </p>
+
 
     <div class="rules">
 
@@ -325,9 +451,11 @@ $percobaan = $_SESSION['percobaan'];
 
         <br>
 
-        Kamu memiliki maksimal <strong>3 percobaan</strong>.
+        Kamu memiliki maksimal
+        <strong>3 percobaan</strong>.
 
     </div>
+
 
     <?php if (!$game_selesai) { ?>
 
@@ -342,24 +470,27 @@ $percobaan = $_SESSION['percobaan'];
                 required
             >
 
-            <br>
-
             <button
                 type="submit"
                 name="submit_tebakan"
             >
+
                 🔍 TEBAK SEKARANG
+
             </button>
 
         </form>
 
     <?php } ?>
 
+
     <div class="percobaan">
 
-        🎲 Percobaan ke-<?php echo $percobaan; ?> dari 3
+        🎲 Percobaan ke-<?php echo $percobaan; ?>
+        dari 3
 
     </div>
+
 
     <?php if ($pesan != "") { ?>
 
@@ -380,7 +511,9 @@ $percobaan = $_SESSION['percobaan'];
                 type="submit"
                 name="reset"
             >
+
                 🔄 MAIN LAGI
+
             </button>
 
         </form>
@@ -393,6 +526,7 @@ $percobaan = $_SESSION['percobaan'];
         🔐 Angka rahasia telah dibuat oleh sistem.
 
     </div>
+
 
     <footer>
 
