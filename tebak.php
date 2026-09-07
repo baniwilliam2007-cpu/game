@@ -25,6 +25,7 @@ $angka_rahasia = $_SESSION['angka'];
             background: linear-gradient(135deg, #09001a, #17002e, #001b33);
             color: white;
             min-height: 100vh;
+
             display: flex;
             justify-content: center;
             align-items: center;
@@ -33,15 +34,20 @@ $angka_rahasia = $_SESSION['angka'];
         .container {
             width: 400px;
             padding: 35px;
+
             background: rgba(20, 20, 40, 0.9);
             border-radius: 20px;
+
             text-align: center;
+
             box-shadow: 0 0 30px #00ffff;
         }
 
         h1 {
             color: #00ffff;
+
             text-shadow: 0 0 10px #00ffff;
+
             margin-bottom: 10px;
         }
 
@@ -56,9 +62,13 @@ $angka_rahasia = $_SESSION['angka'];
 
         .rules {
             background: rgba(0, 255, 255, 0.08);
+
             border: 1px solid #00ffff;
+
             padding: 15px;
+
             border-radius: 10px;
+
             margin: 20px 0;
         }
 
@@ -66,27 +76,52 @@ $angka_rahasia = $_SESSION['angka'];
             color: #00ffff;
         }
 
+        /* Form input tebakan */
+        .form-tebakan {
+            margin-top: 20px;
+        }
+
         input {
             width: 80%;
+
             padding: 12px;
+
             border: 2px solid #00ffff;
+
             border-radius: 8px;
+
             background: #080812;
+
             color: white;
+
             font-size: 16px;
+
             text-align: center;
+
             outline: none;
+        }
+
+        input:focus {
+            box-shadow: 0 0 15px #00ffff;
         }
 
         button {
             margin-top: 15px;
+
             padding: 12px 25px;
+
             border: none;
+
             border-radius: 8px;
+
             background: #00ffff;
+
             color: #000;
+
             font-weight: bold;
+
             cursor: pointer;
+
             box-shadow: 0 0 15px #00ffff;
         }
 
@@ -96,13 +131,17 @@ $angka_rahasia = $_SESSION['angka'];
 
         .info {
             margin-top: 20px;
+
             color: #aaa;
+
             font-size: 14px;
         }
 
         footer {
             margin-top: 25px;
+
             font-size: 12px;
+
             color: #777;
         }
     </style>
@@ -121,14 +160,24 @@ $angka_rahasia = $_SESSION['angka'];
     </p>
 
     <div class="rules">
+
         <strong>📌 PERATURAN</strong>
+
         <br><br>
+
         Sistem telah memilih satu angka rahasia.
+
         <br>
-        Coba tebak angka tersebut!
+
+        Masukkan angka tebakan kamu!
+
     </div>
 
-    <form method="post">
+
+    <!-- Form untuk memasukkan tebakan -->
+
+    <form method="post" class="form-tebakan">
+
         <input
             type="number"
             name="tebak"
@@ -140,17 +189,24 @@ $angka_rahasia = $_SESSION['angka'];
 
         <br>
 
-        <button type="submit">
+        <button type="submit" name="submit_tebakan">
             🔍 TEBAK SEKARANG
         </button>
+
     </form>
 
+
     <div class="info">
+
         🔐 Angka rahasia telah dibuat oleh sistem.
+
     </div>
 
+
     <footer>
+
         NUMBER HUNTER © 2026
+
     </footer>
 
 </div>
