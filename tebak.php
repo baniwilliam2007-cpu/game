@@ -1,86 +1,145 @@
 <?php
 session_start();
 
-// Reset game
+// ==============================
+// RESET GAME
+// ==============================
+
 if (isset($_POST['reset'])) {
+
     session_destroy();
+
     header("Location: tebak.php");
+
     exit;
 }
 
-// Membuat angka rahasia
+
+// ==============================
+// INISIALISASI GAME
+// ==============================
+
 if (!isset($_SESSION['angka'])) {
+
     $_SESSION['angka'] = rand(1, 5);
 }
 
-// Membuat penghitung percobaan
+
 if (!isset($_SESSION['percobaan'])) {
+
     $_SESSION['percobaan'] = 0;
 }
+
 
 $angka_rahasia = $_SESSION['angka'];
 
 $pesan = "";
+
 $jenis_pesan = "";
+
 $game_selesai = false;
 
-// Memproses tebakan
+
+// ==============================
+// PROSES TEBAKAN
+// ==============================
+
 if (isset($_POST['submit_tebakan'])) {
 
     if ($_SESSION['percobaan'] < 3) {
 
-        $_SESSION['percobaan']++;
+        $tebakan = (int) $_POST['tebak'];
 
-        $tebakan = $_POST['tebak'];
 
-        if ($tebakan == $angka_rahasia) {
+        // Validasi angka
+        if ($tebakan < 1 || $tebakan > 5) {
 
-            $pesan = "🎉 JACKPOT! Tebakan kamu benar!";
-            $jenis_pesan = "benar";
-            $game_selesai = true;
+            $pesan = "⚠️ Masukkan angka antara 1 sampai 5.";
+
+            $jenis_pesan = "salah";
 
         } else {
 
-            if ($_SESSION['percobaan'] >= 3) {
+            // Menambah percobaan
+            $_SESSION['percobaan']++;
 
-                $pesan = "🔴 GAME OVER! Kesempatan kamu sudah habis.";
-                $jenis_pesan = "gameover";
+
+            // Mengecek jawaban
+            if ($tebakan == $angka_rahasia) {
+
+                $pesan =
+                    "🎉 JACKPOT! Tebakan kamu benar!";
+
+                $jenis_pesan = "benar";
+
                 $game_selesai = true;
 
             } else {
 
-                $pesan = "❌ Tebakan kamu salah! Coba lagi.";
-                $jenis_pesan = "salah";
+                // Mengecek Game Over
+                if ($_SESSION['percobaan'] >= 3) {
+
+                    $pesan =
+                        "🔴 GAME OVER! Kesempatan kamu sudah habis.";
+
+                    $jenis_pesan = "gameover";
+
+                    $game_selesai = true;
+
+                } else {
+
+                    $sisa =
+                        3 - $_SESSION['percobaan'];
+
+                    $pesan =
+                        "❌ Tebakan kamu salah! " .
+                        "Masih ada " .
+                        $sisa .
+                        " kesempatan.";
+
+                    $jenis_pesan = "salah";
+                }
             }
         }
 
     } else {
 
-        $pesan = "🔴 GAME OVER! Kesempatan kamu sudah habis.";
+        $pesan =
+            "🔴 GAME OVER! Kesempatan kamu sudah habis.";
+
         $jenis_pesan = "gameover";
+
         $game_selesai = true;
     }
 }
 
+
 $percobaan = $_SESSION['percobaan'];
+
 ?>
 
 <!DOCTYPE html>
+
 <html lang="id">
 
 <head>
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Number Hunter</title>
+
 
     <style>
 
         * {
             box-sizing: border-box;
         }
+
 
         body {
 
@@ -236,7 +295,7 @@ $percobaan = $_SESSION['percobaan'];
 
         input:focus {
 
-            border-color: #ffffff;
+            border-color: white;
 
             box-shadow:
                 0 0 10px #00ffff,
@@ -326,7 +385,8 @@ $percobaan = $_SESSION['percobaan'];
 
             background: rgba(0, 255, 136, 0.08);
 
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.35);
+            box-shadow:
+                0 0 20px rgba(0, 255, 136, 0.35);
         }
 
 
@@ -338,7 +398,8 @@ $percobaan = $_SESSION['percobaan'];
 
             background: rgba(255, 79, 129, 0.08);
 
-            box-shadow: 0 0 20px rgba(255, 79, 129, 0.25);
+            box-shadow:
+                0 0 20px rgba(255, 79, 129, 0.25);
         }
 
 
@@ -350,7 +411,8 @@ $percobaan = $_SESSION['percobaan'];
 
             background: rgba(255, 0, 0, 0.08);
 
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            box-shadow:
+                0 0 20px rgba(255, 0, 0, 0.3);
         }
 
 
@@ -363,6 +425,8 @@ $percobaan = $_SESSION['percobaan'];
         .reset button {
 
             background: #ffcc00;
+
+            color: #111;
 
             box-shadow:
                 0 0 10px #ffcc00,
@@ -392,7 +456,9 @@ $percobaan = $_SESSION['percobaan'];
 
             padding-top: 20px;
 
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-top:
+                1px solid
+                rgba(255, 255, 255, 0.08);
 
             color: #555;
 
@@ -411,11 +477,11 @@ $percobaan = $_SESSION['percobaan'];
                 padding: 30px 20px;
             }
 
+
             h1 {
 
                 font-size: 25px;
             }
-
         }
 
     </style>
@@ -427,7 +493,10 @@ $percobaan = $_SESSION['percobaan'];
 
 <div class="container">
 
-    <h1>🎯 NUMBER HUNTER</h1>
+
+    <h1>
+        🎯 NUMBER HUNTER
+    </h1>
 
 
     <div class="target">
@@ -436,14 +505,18 @@ $percobaan = $_SESSION['percobaan'];
 
 
     <p>
+
         Tebak angka rahasia dari
         <strong>1 sampai 5</strong>.
+
     </p>
 
 
     <div class="rules">
 
-        <strong>📌 PERATURAN</strong>
+        <strong>
+            📌 PERATURAN
+        </strong>
 
         <br><br>
 
@@ -459,7 +532,10 @@ $percobaan = $_SESSION['percobaan'];
 
     <?php if (!$game_selesai) { ?>
 
-        <form method="post" class="form-tebakan">
+        <form
+            method="post"
+            class="form-tebakan"
+        >
 
             <input
                 type="number"
@@ -469,6 +545,7 @@ $percobaan = $_SESSION['percobaan'];
                 placeholder="Masukkan angka 1 - 5"
                 required
             >
+
 
             <button
                 type="submit"
@@ -486,17 +563,24 @@ $percobaan = $_SESSION['percobaan'];
 
     <div class="percobaan">
 
-        🎲 Percobaan ke-<?php echo $percobaan; ?>
-        dari 3
+        🎲 Percobaan ke-<?php
+        echo $percobaan;
+        ?> dari 3
 
     </div>
 
 
     <?php if ($pesan != "") { ?>
 
-        <div class="pesan <?php echo $jenis_pesan; ?>">
+        <div
+            class="pesan <?php
+            echo $jenis_pesan;
+            ?>"
+        >
 
-            <?php echo $pesan; ?>
+            <?php
+            echo $pesan;
+            ?>
 
         </div>
 
@@ -505,7 +589,10 @@ $percobaan = $_SESSION['percobaan'];
 
     <?php if ($game_selesai) { ?>
 
-        <form method="post" class="reset">
+        <form
+            method="post"
+            class="reset"
+        >
 
             <button
                 type="submit"
@@ -533,6 +620,7 @@ $percobaan = $_SESSION['percobaan'];
         NUMBER HUNTER © 2026
 
     </footer>
+
 
 </div>
 
