@@ -6,11 +6,24 @@ if (!isset($_SESSION['angka'])) {
     $_SESSION['angka'] = rand(1, 5);
 }
 
+// Membuat penghitung percobaan
+if (!isset($_SESSION['percobaan'])) {
+    $_SESSION['percobaan'] = 0;
+}
+
 $angka_rahasia = $_SESSION['angka'];
+
+// Menghitung percobaan ketika tombol ditekan
+if (isset($_POST['submit_tebakan'])) {
+    $_SESSION['percobaan']++;
+}
+
+$percobaan = $_SESSION['percobaan'];
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +35,14 @@ $angka_rahasia = $_SESSION['angka'];
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #09001a, #17002e, #001b33);
+
+            background: linear-gradient(
+                135deg,
+                #09001a,
+                #17002e,
+                #001b33
+            );
+
             color: white;
             min-height: 100vh;
 
@@ -36,6 +56,7 @@ $angka_rahasia = $_SESSION['angka'];
             padding: 35px;
 
             background: rgba(20, 20, 40, 0.9);
+
             border-radius: 20px;
 
             text-align: center;
@@ -129,6 +150,23 @@ $angka_rahasia = $_SESSION['angka'];
             background: white;
         }
 
+        /* Menampilkan jumlah percobaan */
+        .percobaan {
+            margin-top: 20px;
+
+            padding: 12px;
+
+            border: 1px solid #00ffff;
+
+            border-radius: 10px;
+
+            color: #00ffff;
+
+            font-weight: bold;
+
+            background: rgba(0, 255, 255, 0.08);
+        }
+
         .info {
             margin-top: 20px;
 
@@ -196,6 +234,15 @@ $angka_rahasia = $_SESSION['angka'];
     </form>
 
 
+    <!-- Menampilkan jumlah percobaan -->
+
+    <div class="percobaan">
+
+        🎲 Percobaan ke-<?php echo $percobaan; ?>
+
+    </div>
+
+
     <div class="info">
 
         🔐 Angka rahasia telah dibuat oleh sistem.
@@ -212,4 +259,5 @@ $angka_rahasia = $_SESSION['angka'];
 </div>
 
 </body>
+
 </html>
