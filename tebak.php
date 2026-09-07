@@ -1,481 +1,159 @@
 <?php
 session_start();
 
-// Membuat angka rahasia hanya sekali
+// Membuat angka rahasia hanya satu kali
 if (!isset($_SESSION['angka'])) {
     $_SESSION['angka'] = rand(1, 5);
-    $_SESSION['percobaan'] = 0;
 }
 
-$x = $_SESSION['angka'];
-$pesan = "";
-$jenis_pesan = "";
-
-if (isset($_POST['tebak'])) {
-
-    $_SESSION['percobaan']++;
-
-    $tebakan = $_POST['tebak'];
-    $percobaan = $_SESSION['percobaan'];
-
-    if ($tebakan == $x) {
-
-        $pesan = "🎉 <strong>JACKPOT!</strong><br>
-                  Tebakan kamu benar!<br>
-                  Angka rahasianya adalah <strong>$x</strong>";
-        $jenis_pesan = "benar";
-
-        // Reset game
-        unset($_SESSION['angka']);
-        unset($_SESSION['percobaan']);
-
-    } elseif ($percobaan >= 3) {
-
-        $pesan = "💀 <strong>GAME OVER!</strong><br>
-                  Kesempatan kamu sudah habis.<br>
-                  Angka yang benar adalah <strong>$x</strong>";
-        $jenis_pesan = "salah";
-
-        // Reset game
-        unset($_SESSION['angka']);
-        unset($_SESSION['percobaan']);
-
-    } else {
-
-        $sisa = 3 - $percobaan;
-
-        $pesan = "⚡ <strong>TEBAKAN SALAH!</strong><br>
-                  Masih ada <strong>$sisa kesempatan</strong>.";
-        $jenis_pesan = "salah";
-    }
-}
+$angka_rahasia = $_SESSION['angka'];
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Number Hunter</title>
 
     <style>
-
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
             font-family: Arial, sans-serif;
-        }
-
-        body {
-
-            min-height: 100vh;
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
-
-            background:
-                radial-gradient(circle at top, #1f2937 0%, #09090b 45%, #020617 100%);
-
+            background: linear-gradient(135deg, #09001a, #17002e, #001b33);
             color: white;
-
-            overflow: hidden;
-        }
-
-        /* Efek lingkaran background */
-
-        body::before {
-
-            content: "";
-
-            position: absolute;
-
-            width: 500px;
-
-            height: 500px;
-
-            background: #00f5ff;
-
-            opacity: 0.08;
-
-            border-radius: 50%;
-
-            filter: blur(100px);
-
-            top: -150px;
-
-            left: -150px;
-        }
-
-        body::after {
-
-            content: "";
-
-            position: absolute;
-
-            width: 500px;
-
-            height: 500px;
-
-            background: #a855f7;
-
-            opacity: 0.08;
-
-            border-radius: 50%;
-
-            filter: blur(100px);
-
-            bottom: -150px;
-
-            right: -150px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
-
-            position: relative;
-
-            z-index: 2;
-
-            width: 420px;
-
+            width: 400px;
             padding: 35px;
-
-            border-radius: 25px;
-
-            background: rgba(15, 23, 42, 0.92);
-
-            border: 1px solid rgba(0, 245, 255, 0.3);
-
-            box-shadow:
-                0 0 20px rgba(0, 245, 255, 0.15),
-                0 0 60px rgba(168, 85, 247, 0.12);
-
+            background: rgba(20, 20, 40, 0.9);
+            border-radius: 20px;
             text-align: center;
-        }
-
-        .icon {
-
-            width: 90px;
-
-            height: 90px;
-
-            margin: 0 auto 20px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            border-radius: 50%;
-
-            background: linear-gradient(
-                135deg,
-                #00f5ff,
-                #8b5cf6
-            );
-
-            font-size: 45px;
-
-            box-shadow:
-                0 0 20px rgba(0, 245, 255, 0.5),
-                0 0 40px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 0 30px #00ffff;
         }
 
         h1 {
-
-            font-size: 30px;
-
-            margin-bottom: 8px;
-
-            color: #ffffff;
-
-            letter-spacing: 2px;
-
-            text-shadow:
-                0 0 10px rgba(0, 245, 255, 0.8);
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+            margin-bottom: 10px;
         }
 
-        .subtitle {
-
-            color: #94a3b8;
-
-            font-size: 14px;
-
-            margin-bottom: 25px;
+        .target {
+            font-size: 70px;
+            margin: 20px 0;
         }
 
-        .aturan {
-
-            background: rgba(30, 41, 59, 0.8);
-
-            border: 1px solid rgba(148, 163, 184, 0.15);
-
-            border-radius: 15px;
-
-            padding: 18px;
-
-            margin-bottom: 22px;
-
-            text-align: left;
-
-            color: #cbd5e1;
-
-            font-size: 14px;
-
-            line-height: 1.8;
+        p {
+            color: #ddd;
         }
 
-        .aturan strong {
-
-            color: #00f5ff;
-
-            font-size: 15px;
+        .rules {
+            background: rgba(0, 255, 255, 0.08);
+            border: 1px solid #00ffff;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
         }
 
-        .number-box {
-
-            position: relative;
-
-            margin-bottom: 15px;
+        .rules strong {
+            color: #00ffff;
         }
 
         input {
-
-            width: 100%;
-
-            padding: 15px;
-
-            border-radius: 12px;
-
-            border: 1px solid #334155;
-
-            background: #020617;
-
+            width: 80%;
+            padding: 12px;
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            background: #080812;
             color: white;
-
-            font-size: 18px;
-
+            font-size: 16px;
             text-align: center;
-
             outline: none;
-
-            transition: 0.3s;
-        }
-
-        input::placeholder {
-
-            color: #64748b;
-        }
-
-        input:focus {
-
-            border-color: #00f5ff;
-
-            box-shadow:
-                0 0 10px rgba(0, 245, 255, 0.4);
         }
 
         button {
-
-            width: 100%;
-
-            padding: 15px;
-
+            margin-top: 15px;
+            padding: 12px 25px;
             border: none;
-
-            border-radius: 12px;
-
-            background: linear-gradient(
-                135deg,
-                #00f5ff,
-                #8b5cf6
-            );
-
-            color: #020617;
-
-            font-size: 16px;
-
+            border-radius: 8px;
+            background: #00ffff;
+            color: #000;
             font-weight: bold;
-
             cursor: pointer;
-
-            transition: 0.3s;
-
-            box-shadow:
-                0 0 15px rgba(0, 245, 255, 0.25);
+            box-shadow: 0 0 15px #00ffff;
         }
 
         button:hover {
-
-            transform: translateY(-2px);
-
-            box-shadow:
-                0 0 25px rgba(0, 245, 255, 0.5);
+            background: white;
         }
 
-        button:active {
-
-            transform: scale(0.98);
-        }
-
-        .hasil {
-
+        .info {
             margin-top: 20px;
-
-            padding: 17px;
-
-            border-radius: 14px;
-
-            line-height: 1.7;
-
+            color: #aaa;
             font-size: 14px;
         }
 
-        .benar {
-
-            background: rgba(34, 197, 94, 0.12);
-
-            border: 1px solid #22c55e;
-
-            color: #86efac;
-
-            box-shadow:
-                0 0 15px rgba(34, 197, 94, 0.15);
-        }
-
-        .salah {
-
-            background: rgba(239, 68, 68, 0.12);
-
-            border: 1px solid #ef4444;
-
-            color: #fca5a5;
-
-            box-shadow:
-                0 0 15px rgba(239, 68, 68, 0.15);
-        }
-
-        .footer {
-
+        footer {
             margin-top: 25px;
-
-            color: #475569;
-
             font-size: 12px;
-
-            letter-spacing: 1px;
+            color: #777;
         }
-
-        .badge {
-
-            display: inline-block;
-
-            margin-top: 12px;
-
-            padding: 5px 12px;
-
-            border-radius: 20px;
-
-            background: rgba(0, 245, 255, 0.08);
-
-            border: 1px solid rgba(0, 245, 255, 0.2);
-
-            color: #67e8f9;
-
-            font-size: 11px;
-        }
-
     </style>
-
 </head>
 
 <body>
 
 <div class="container">
 
-    <div class="icon">
-        🎯
-    </div>
+    <h1>🎯 NUMBER HUNTER</h1>
 
-    <h1>NUMBER HUNTER</h1>
+    <div class="target">🎯</div>
 
-    <p class="subtitle">
-        Temukan angka rahasia dan menangkan permainan!
+    <p>
+        Tebak angka rahasia dari <strong>1 sampai 5</strong>.
     </p>
 
-    <div class="aturan">
-
-        <strong>⚡ MISSION RULES</strong>
-
+    <div class="rules">
+        <strong>📌 PERATURAN</strong>
+        <br><br>
+        Sistem telah memilih satu angka rahasia.
         <br>
-
-        🎯 Angka rahasia berada di antara <strong>1 - 5</strong>
-
-        <br>
-
-        🔥 Kamu memiliki <strong>3 kesempatan</strong>
-
-        <br>
-
-        🧠 Gunakan strategi terbaikmu
-
-        <br>
-
-        💎 Berhasil menebak = <strong>WIN!</strong>
-
+        Coba tebak angka tersebut!
     </div>
 
     <form method="post">
+        <input
+            type="number"
+            name="tebak"
+            min="1"
+            max="5"
+            placeholder="Masukkan angka 1 - 5"
+            required
+        >
 
-        <div class="number-box">
-
-            <input
-                type="number"
-                name="tebak"
-                min="1"
-                max="5"
-                placeholder="Masukkan angka 1 - 5"
-                required
-            >
-
-        </div>
+        <br>
 
         <button type="submit">
-            🚀 SUBMIT GUESS
+            🔍 TEBAK SEKARANG
         </button>
-
     </form>
 
-    <?php if ($pesan != "") { ?>
-
-        <div class="hasil <?php echo $jenis_pesan; ?>">
-
-            <?php echo $pesan; ?>
-
-        </div>
-
-    <?php } ?>
-
-    <div class="badge">
-        PHP • NUMBER HUNTER • GAME
+    <div class="info">
+        🔐 Angka rahasia telah dibuat oleh sistem.
     </div>
 
-    <div class="footer">
-
-        © 2026 Number Hunter
-
-    </div>
+    <footer>
+        NUMBER HUNTER © 2026
+    </footer>
 
 </div>
 
 </body>
-
 </html>
