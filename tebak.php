@@ -12,29 +12,47 @@ if (!isset($_SESSION['percobaan'])) {
 }
 
 $angka_rahasia = $_SESSION['angka'];
+
 $pesan = "";
 $jenis_pesan = "";
 
 // Memproses tebakan
 if (isset($_POST['submit_tebakan'])) {
 
-    // Menambah jumlah percobaan
-    $_SESSION['percobaan']++;
+    // Mengecek apakah percobaan masih kurang dari 3
+    if ($_SESSION['percobaan'] < 3) {
 
-    // Mengambil angka dari input
-    $tebakan = $_POST['tebak'];
+        // Menambah jumlah percobaan
+        $_SESSION['percobaan']++;
 
-    // Mengecek tebakan
-    if ($tebakan == $angka_rahasia) {
+        // Mengambil angka dari input
+        $tebakan = $_POST['tebak'];
 
-        $pesan = "🎉 JACKPOT! Tebakan kamu benar!";
-        $jenis_pesan = "benar";
+        // Mengecek tebakan
+        if ($tebakan == $angka_rahasia) {
+
+            $pesan = "🎉 JACKPOT! Tebakan kamu benar!";
+            $jenis_pesan = "benar";
+
+        } else {
+
+            // Jika sudah mencapai 3 percobaan
+            if ($_SESSION['percobaan'] >= 3) {
+
+                $pesan = "🔴 GAME OVER! Kesempatan kamu sudah habis.";
+                $jenis_pesan = "gameover";
+
+            } else {
+
+                $pesan = "❌ Tebakan kamu salah! Coba lagi.";
+                $jenis_pesan = "salah";
+            }
+        }
 
     } else {
 
-        $pesan = "❌ Tebakan kamu salah! Coba lagi.";
-        $jenis_pesan = "salah";
-
+        $pesan = "🔴 GAME OVER! Kesempatan kamu sudah habis.";
+        $jenis_pesan = "gameover";
     }
 }
 
@@ -255,6 +273,18 @@ $percobaan = $_SESSION['percobaan'];
         }
 
 
+        .pesan.gameover {
+
+            border: 2px solid #ff0000;
+
+            color: #ff4444;
+
+            background: rgba(255, 0, 0, 0.1);
+
+            box-shadow: 0 0 15px #ff0000;
+        }
+
+
         .info {
 
             margin-top: 20px;
@@ -306,7 +336,7 @@ $percobaan = $_SESSION['percobaan'];
 
         <br>
 
-        Masukkan angka tebakan kamu!
+        Kamu memiliki maksimal <strong>3 percobaan</strong>.
 
     </div>
 
@@ -343,12 +373,12 @@ $percobaan = $_SESSION['percobaan'];
 
     <div class="percobaan">
 
-        🎲 Percobaan ke-<?php echo $percobaan; ?>
+        🎲 Percobaan ke-<?php echo $percobaan; ?> dari 3
 
     </div>
 
 
-    <!-- Menampilkan hasil tebakan -->
+    <!-- Menampilkan pesan -->
 
     <?php if ($pesan != "") { ?>
 
