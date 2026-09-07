@@ -12,10 +12,18 @@ if (!isset($_SESSION['percobaan'])) {
 }
 
 $angka_rahasia = $_SESSION['angka'];
+$pesan = "";
 
-// Menghitung percobaan ketika tombol ditekan
+// Menghitung percobaan dan mengecek tebakan benar
 if (isset($_POST['submit_tebakan'])) {
+
     $_SESSION['percobaan']++;
+
+    $tebakan = $_POST['tebak'];
+
+    if ($tebakan == $angka_rahasia) {
+        $pesan = "🎉 JACKPOT! Tebakan kamu benar!";
+    }
 }
 
 $percobaan = $_SESSION['percobaan'];
@@ -97,7 +105,6 @@ $percobaan = $_SESSION['percobaan'];
             color: #00ffff;
         }
 
-        /* Form input tebakan */
         .form-tebakan {
             margin-top: 20px;
         }
@@ -150,7 +157,6 @@ $percobaan = $_SESSION['percobaan'];
             background: white;
         }
 
-        /* Menampilkan jumlah percobaan */
         .percobaan {
             margin-top: 20px;
 
@@ -165,6 +171,24 @@ $percobaan = $_SESSION['percobaan'];
             font-weight: bold;
 
             background: rgba(0, 255, 255, 0.08);
+        }
+
+        .pesan {
+            margin-top: 20px;
+
+            padding: 15px;
+
+            border: 2px solid #00ffff;
+
+            border-radius: 10px;
+
+            color: #00ffff;
+
+            font-weight: bold;
+
+            background: rgba(0, 255, 255, 0.1);
+
+            text-shadow: 0 0 8px #00ffff;
         }
 
         .info {
@@ -211,8 +235,7 @@ $percobaan = $_SESSION['percobaan'];
 
     </div>
 
-
-    <!-- Form untuk memasukkan tebakan -->
+    <!-- Form input tebakan -->
 
     <form method="post" class="form-tebakan">
 
@@ -233,7 +256,6 @@ $percobaan = $_SESSION['percobaan'];
 
     </form>
 
-
     <!-- Menampilkan jumlah percobaan -->
 
     <div class="percobaan">
@@ -242,13 +264,23 @@ $percobaan = $_SESSION['percobaan'];
 
     </div>
 
+    <!-- Menampilkan pesan jika tebakan benar -->
+
+    <?php if ($pesan != "") { ?>
+
+        <div class="pesan">
+
+            <?php echo $pesan; ?>
+
+        </div>
+
+    <?php } ?>
 
     <div class="info">
 
         🔐 Angka rahasia telah dibuat oleh sistem.
 
     </div>
-
 
     <footer>
 
